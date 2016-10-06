@@ -1,0 +1,36 @@
+version: '2'
+services:
+  web:
+    restart: always
+    image: nginx
+    ports:
+      - "8080:80"
+    depends_on:
+      - php
+    volumes:
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/log/nginx:/var/log/nginx
+      - ./:/var/www/html
+
+  php:
+    restart: always
+    image: php:7-fpm
+    depends_on:
+      - db
+    volumes:
+      - ./:/var/www/html
+
+  db:
+    restart: always
+    image: mysql
+    ports:
+      - "33060:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: qaz
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: database
+    volumes:
+      - ./docker/mysql:/var/lib/mysql
+      - ./docker/log/mysql:/var/log/mysql
+
