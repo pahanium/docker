@@ -1,7 +1,8 @@
 version: '2'
 services:
   web:
-    restart: always
+    # Uncomment to autostart at boottime
+    #restart: always
     image: nginx
     ports:
       - "8080:80"
@@ -12,8 +13,9 @@ services:
       - ./docker/log/nginx:/var/log/nginx
       - ./:/var/www/html
 
-  php:
-    restart: always
+  app:
+    # Uncomment to autostart at boottime
+    #restart: always
     build: docker/php
     depends_on:
       - db
@@ -21,14 +23,15 @@ services:
       - ./:/var/www/html
 
   db:
-    restart: always
-    image: mysql
+    # Uncomment to autostart at boottime
+    #restart: always
+    image: mysql:5.7
     ports:
       - "33060:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: qaz
+      MYSQL_ROOT_PASSWORD: secret-root
       MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_PASSWORD: secret
       MYSQL_DATABASE: database
     volumes:
       - ./docker/mysql:/var/lib/mysql
